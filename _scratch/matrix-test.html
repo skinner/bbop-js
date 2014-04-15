@@ -6,10 +6,10 @@
     <script type="text/javascript" src="../lib/bbop/widget/matrix.js"></script>
     <script type="text/javascript">
       var mat;
-      var row_count = 100;
-      var col_count = 50;
+      var row_count = 20;
+      var col_count = 10;
       var cell_prob = 0.2;
-      var max_padding = 14;
+      var max_padding = 20;
       var rowdescs = new Array(row_count);
       var displayed_rows = {};
       for (var ri = 0; ri < row_count; ri++) {
@@ -20,26 +20,30 @@
       var coldescs = new Array(col_count);
       var displayed_cols = {};
       for (var ci = 0; ci < col_count; ci++) {
-        coldescs[ci] = "C" + ci;
-        displayed_cols[coldescs[ci]] = true;
+        coldescs[ci] = {
+             id: "C" + ci,
+             name: "C" + ci
+        };
+        displayed_cols[coldescs[ci].id] = true;
       }
 
       var row_order = rowdescs.slice(0);
       var col_order = coldescs.slice(0);
-
+      var config = {
+          //cell_width: 24,
+          cell_border: 1,
+          cell_height: 22,
+          header_height: 20,
+          cell_padding: 4,
+          show_headers: true,
+          transition_time: "0.8s"
+      };
       window.onload = function() {
         mat = new bbop.widget.matrix.renderer("test0",
                                               rowdescs,
                                               coldescs, 
                                               cell_renderer,
-                                              {
-                                                cell_width: 24,
-                                                cell_border: 1,
-                                                cell_height: 22,
-                                                header_height: 20,
-                                                cell_padding: 4,
-                                                show_headers: true,
-                                                transition_time: "0.8s"});
+                                              config);
 
         
       };
@@ -47,7 +51,10 @@
           if (Math.random() >= cell_prob) return null;
 
           var cell = document.createElement("div");
-          //var varSuffix = Array((Math.random() * max_padding) | 0).join("x");
+          if (! config.cell_width) {
+              var varSuffix = Array((Math.random() * max_padding) | 0).join("x");
+              cell.appendChild(document.createTextNode(row + ", " + col + "|" + varSuffix));
+          }
           cell.style.backgroundColor = "#aaa";
           return cell;
       }
@@ -76,8 +83,8 @@
       function show_cols() {
         var to_show = [];
         for (var i = 0; i < col_order.length; i++) {
-          if (displayed_cols[col_order[i]]) {
-            to_show.push(col_order[i]);
+          if (displayed_cols[col_order[i].id]) {
+            to_show.push(col_order[i].id);
           }
         }
         mat.show_cols(to_show);
@@ -107,7 +114,7 @@
 
       function change_col_subset() {
         for (var i = 0; i < coldescs.length; i++) {
-          displayed_cols[coldescs[i]] = (Math.random() > 0.15);
+          displayed_cols[coldescs[i].id] = (Math.random() > 0.15);
         }
         show_cols();
       }
