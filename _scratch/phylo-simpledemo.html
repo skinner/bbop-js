@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
-    <title>phylo matrix test</title>
+    <title>phylo simple test</title>
     <link rel="stylesheet" type="text/css" href="http://amigo2.berkeleybop.org/amigo2/css/bootstrap.min.css">
 
     <link rel="stylesheet" type="text/css" href="http://amigo2.berkeleybop.org/amigo2/javascript/com/jquery/css/jqamigo-1.10.3/jquery-ui-1.10.3.custom.min.css">
@@ -32,12 +32,8 @@
       var gconf = new bbop.golr.conf(amigo.data.golr);
 
       var r = new bbop.widget.phylo.renderer('test0', gloc, gconf, {
-          header_height: 180,
-          show_headers: true,
           mat_cell_border: 1,
-          row_height: 20,
-          mat_cell_width: 20,
-          matrix: true
+          row_height: 20
       });
 
       jQuery(document).ready(function() {
